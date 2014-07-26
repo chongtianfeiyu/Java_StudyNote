@@ -1,0 +1,56 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+
+
+
+public class Test {
+	public static void main(String[] args) {
+		/*
+		* 注意下面两条语句，能用此方法引用内部类（公有内部类才行）
+		*/
+		TalkingClock ta = new TalkingClock(1000);
+		TalkingClock.TimePrinter li = ta.new TimePrinter();
+		ta.start();
+		JOptionPane.showMessageDialog(null, "quit");
+		System.exit(0);
+	}
+}
+
+class TalkingClock {
+	public TalkingClock(int interval) {
+		this.interval = interval;
+	}
+	public void start() {
+		ActionListener t = new TimePrinter();
+		Timer ti = new Timer(this.interval, t);
+		ti.start();
+	}
+
+	private int interval = 1000;
+	// 内部类
+	class TimePrinter implements ActionListener {
+	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Date now = new Date();
+			System.out.println(now);
+		}
+	}
+}
+
+    //匿名内部类
+	public void start() {
+		ActionListener t = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) {
+				Date now = new Date();
+				System.out.println(now);
+			}
+		};
+		Timer ti = new Timer(this.interval, t);
+		ti.start();
+	}

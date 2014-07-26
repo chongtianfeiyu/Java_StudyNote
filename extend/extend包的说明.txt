@@ -1,0 +1,6 @@
+这个包用于观察继承中的问题，
+
+AboutExtends、AbstraTest、Abs、FatherFather类（别介意名字）说明了“属性”继承问题
+fatherObject中的类说明“方法”继承问题
+总体来说，子类继承父亲后，若无覆盖，这时对继承的属性进行修改，即对父类的属性修改；
+使用继承的方法，即使用父类的方法，可能会修改or返回父类的属性（这一点要看看fatherObject）

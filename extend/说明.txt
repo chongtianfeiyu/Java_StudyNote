@@ -1,0 +1,3 @@
+父类与子类调用之间属性的关系。
+刚开始以为子类能继承父类的属性，后来测试证明，子类是能使用父类protected的属性而已，在子类修改属性this.s = "change"，会使父类的属性s改变.
+You can also see the Evernote/Code/Java note/

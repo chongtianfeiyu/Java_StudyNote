@@ -1,0 +1,7 @@
+子类在继承父类的时候，可以拥有父类protected以上的属性和方法，但若没有覆盖，使用这些属性和方法时，相当于在父类执行这些操作.
+FatherUseChildObject中，Someone继承了Person的getName()方法，但没有覆盖，所以使用时会得到父类的name，而不是子类的name
+
+还有，Person p 和 Someone s 指向的是同一个对象，但编译器会把 p 看作是 Person对象
+所以，p.getN() 是错误的，因为Person类里面没有getN()方法
+但若Person类有getN()方法， p.getN() 相当与 s.getN()
+这点要注意

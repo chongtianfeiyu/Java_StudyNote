@@ -1,0 +1,13 @@
+Component:组件
+
+Container:容器，每个容器都有一个默认的布局管理器
+
+Frame:继承Component，是一个顶级容器
+
+Panel:面板，继承Component，是一个容器，添加到Frame中
+
+Render:
+
+Metric:公尺；标准
+
+Ellipse:椭圆
