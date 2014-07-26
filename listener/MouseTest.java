@@ -45,6 +45,9 @@ class MouseComponent extends JComponent {
 			g2.draw(r);
 	}
 
+	/*
+	 * 查找鼠标在按下时所在位置是否有矩形
+	 */
 	public Rectangle2D find(Point2D p) {
 		//contains指的是包含，在矩形里面也是contain
 		for (Rectangle2D r : squares)
@@ -77,8 +80,10 @@ class MouseComponent extends JComponent {
      */
 	private class MouseHandler extends MouseAdapter {
 		public void mousePressed(MouseEvent event) {
+			//鼠标是否在矩形上
 			current = find(event.getPoint());
-			
+			//测试点击一次鼠标后是否会一直产生mousePressed，结果否。
+			System.out.println(event);
 			if (current == null)
 				add(event.getPoint());
 		}
@@ -94,18 +99,20 @@ class MouseComponent extends JComponent {
 	 * 移动鼠标时的Listener
 	 */
 	private class MouseMotionHandler implements MouseMotionListener {
+		//移动鼠标
 	    public void mouseMoved(MouseEvent event) {
 	    	if (find(event.getPoint()) == null)
 	    		setCursor(Cursor.getDefaultCursor());
 	    	else
 	    		setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 	    }
-	    
+	    //拖拉鼠标
 	    public void mouseDragged(MouseEvent event) {
 	    	if (current != null) {
 	    		int x = event.getX();
 	    		int y = event.getY();
-
+	    		//每移动一个像素都会输出一次
+	    		System.out.println(event);
 	    		current.setFrame(x - SIDELENGTH / 2, y - SIDELENGTH / 2, SIDELENGTH, SIDELENGTH);
 	    		repaint();
 	    	}
