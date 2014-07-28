@@ -13,7 +13,7 @@ public class PlaneFrame extends JFrame{
 	private static final int LENGTH = 500, HEIGHT = 500;
 	private PlanePanel pPanel;
 	private Plane plane;
-	private PlaneRunnale pRun;
+	private PlaneRunnable pRun;
 	
 	public PlaneFrame() {
 		setTitle("MyPlane");
@@ -23,7 +23,7 @@ public class PlaneFrame extends JFrame{
 		pPanel = new PlanePanel();
 		plane = new Plane(getBounds());
 		pPanel.addPlane(plane);
-		pRun = new PlaneRunnale();
+		pRun = new PlaneRunnable();
 		//加了 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT 就不行了。如果加了的话，pPanel.add(new JButton)就可以了，估计是focus的原因
 		//经查看， JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT ： 当这个组件包含了拥有键盘焦点的组件时      因pPanel没有拥有焦点的组件？
 		//addKeyListener(new KeyListener(){ ... }); 按键也可以这么处理。
@@ -51,22 +51,26 @@ public class PlaneFrame extends JFrame{
 			}
 			public void keyReleased(KeyEvent e) {
 				int key = e.getKeyCode();
+				// 若是一直按，会一直产生keyPressed，也就是会一直产生keyReleased
+//				System.out.println("released: " + key);
 				if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN
 						|| key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_LEFT) {
 					plane.setDirection(key, false);
-					plane.move();
+//					plane.move();
 				}
 				pPanel.repaint();
 			}
 			//一直按键的话，会不断产生keyPressed，这一点鼠标不一样
 			//但两个键一起按只能有一个键被算是一直按（另一个键会被算按下一次）
+			//不过另一个键不会算Released
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyCode();
 //				System.out.println(key);
 				if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN
 						|| key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_LEFT) {
 					plane.setDirection(key, true);
-					plane.move();
+					//在没用moveRunnable之前，每当按键才移动一次，很慢、很迟钝
+//					plane.move();
 				}
 				if (key == KeyEvent.VK_SPACE)
 					new Thread(pRun).start();
@@ -74,6 +78,7 @@ public class PlaneFrame extends JFrame{
 			}
 		});
 		
+		new Thread(new moveRunable()).start();
 		add(pPanel);
 	}
 	
@@ -88,8 +93,20 @@ public class PlaneFrame extends JFrame{
 //			pPanel.repaint();
 //		}
 //	}
-	
-	private class PlaneRunnale implements Runnable {
+	private class moveRunable implements Runnable {
+		public void run() {
+			while (true) {
+				plane.move();
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				pPanel.repaint();
+			}
+		}
+	}
+	private class PlaneRunnable implements Runnable {
 		public void run() {
 			Bullet b = plane.shot();
 			pPanel.addBullet(b);
