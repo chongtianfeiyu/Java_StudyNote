@@ -72,8 +72,9 @@ public class PlaneFrame extends JFrame{
 					//在没用moveRunnable之前，每当按键才移动一次，很慢、很迟钝
 //					plane.move();
 				}
-				if (key == KeyEvent.VK_SPACE)
+				if (key == KeyEvent.VK_SPACE) {
 					new Thread(pRun).start();
+				}
 				pPanel.repaint();
 			}
 		});
@@ -93,6 +94,8 @@ public class PlaneFrame extends JFrame{
 //			pPanel.repaint();
 //		}
 //	}
+	
+	//飞机移动的线程
 	private class moveRunable implements Runnable {
 		public void run() {
 			while (true) {
@@ -100,28 +103,28 @@ public class PlaneFrame extends JFrame{
 				try {
 					Thread.sleep(20);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					System.out.println("test3");
 				}
 				pPanel.repaint();
 			}
 		}
 	}
+	//子弹移动的线程
 	private class PlaneRunnable implements Runnable {
 		public void run() {
 			Bullet b = plane.shot();
 			pPanel.addBullet(b);
 			for (int i = 0; i < 1400; ++i) {
-				synchronized (pPanel) {
-					b.move();
-					pPanel.repaint();
-				}
+				b.move();
 				try {
 					Thread.sleep(2);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					System.out.println("test2");
 				}
 			}
-			pPanel.removeBullect(b);
+//			synchronized (pPanel) {
+				pPanel.removeBullet(b);
+//			}
 		}
 	}
 }
