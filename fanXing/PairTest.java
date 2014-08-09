@@ -13,7 +13,9 @@ public class PairTest {
 	//要小心这种强制转换， instanceof也是要小心的
 	// ? 是通配符
 	public static void d(Pair<?> a) {
-		a = (Pair<Integer>) a;
+		//即使 a 是 Pair<String>，也不会出错，貌似还能正常使用
+		Pair<Integer> ta = (Pair<Integer>) a;
+		System.out.println(ta.first + "\n" + a);
 	}
 
 }
@@ -35,9 +37,9 @@ class Pair<T> {
 	/*
 	 * 泛型方法
 	 */
-	// dd前的 U 指的是它为返回类型
+	// U 是返回类型
 	// Comparable 说明只能被实现了Comparable接口的类调用
-	public static <T extends Comparable<?> & Serializable, U> U dd(T a) {
+	public static <T extends Comparable<?> & Serializable, U> T dd(T a) {
 		return a;
 	}
 	
