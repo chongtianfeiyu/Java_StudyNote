@@ -16,6 +16,7 @@ public class ChatClient implements Runnable{
 		IPAddress = InetAddress.getByName("localhost");
 		System.out.print("Please input your name:");
 		while (true) {
+			//@SuppressWarnings("resource")是用来压制资源泄露警告的，如使用IO类，最后没close
 			@SuppressWarnings("resource")
 			Scanner in = new Scanner(System.in);
 			String name = in.nextLine();
